@@ -7,13 +7,28 @@ export const authOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
+        email: {
+          label: "Email",
+          type: "text",
+          placeholder: "Enter your email",
+        },
+        name: {
+          label: "Name",
+          type: "text",
+          placeholder: "Enter your username",
+        },
         phone: {
           label: "Phone number",
           type: "text",
-          placeholder: "1231231231",
+          placeholder: "Enter your phone number",
           required: true,
         },
-        password: { label: "Password", type: "password", required: true },
+        password: {
+          label: "Password",
+          type: "password",
+          placeholder: "******",
+          required: true,
+        },
       },
       // TODO: User credentials type from next-aut
       async authorize(credentials: any) {
@@ -34,6 +49,7 @@ export const authOptions = {
             return {
               id: existingUser.id.toString(),
               name: existingUser.name,
+              phone: existingUser.number,
               email: existingUser.number,
             };
           }
@@ -45,19 +61,21 @@ export const authOptions = {
             data: {
               number: credentials.phone,
               password: hashedPassword,
+              email: credentials.email,
+              name: credentials.name,
             },
           });
 
           return {
             id: user.id.toString(),
             name: user.name,
+            number: user.number,
             email: user.number,
           };
         } catch (e) {
           console.error(e);
+          return null;
         }
-
-        return null;
       },
     }),
   ],
